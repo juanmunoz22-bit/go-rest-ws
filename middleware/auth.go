@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/golang-jwt/jwt"
 	"github.com/juanmunoz22-bit/go-rest-ws/models"
 	"github.com/juanmunoz22-bit/go-rest-ws/server"
+	"github.com/juanmunoz22-bit/go-rest-ws/utils"
 )
 
 var (
@@ -32,10 +32,8 @@ func CheckAuthMiddleware(s server.Server) func(h http.Handler) http.Handler {
 				next.ServeHTTP(w, r)
 				return
 			}
-			tokenString := strings.TrimSpace(r.Header.Get("Authorization"))
-			_, err := jwt.ParseWithClaims(tokenString, models.AppClaims{}, func(token *jwt.Token) (interface{}, error) {
-				return []byte(s.Config().JWTSecret), nil
-			})
+			tokenString := utils.StringToken(r)
+			_, err := utils.ClaimTokenFromAuth(s, tokenString, models.AppClaims{})
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusUnauthorized)
 				return
