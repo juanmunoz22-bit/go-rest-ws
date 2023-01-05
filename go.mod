@@ -7,7 +7,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 )
 
-require golang.org/x/crypto v0.3.0
+require golang.org/x/crypto v0.5.0
 
 require github.com/rs/cors v1.8.3
 
