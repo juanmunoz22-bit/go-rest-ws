@@ -1,0 +1,29 @@
+<html>
+    <body>
+        <h1>Posts App test</h1>
+    </body>
+    <script>
+        fetch("http://localhost:5050/posts", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            return response.json()
+        }).then(function (json) {
+            console.log(json)
+        });
+        
+        var ws = new WebSocket("ws://localhost:5050/ws");
+
+        ws.onopen = function(){
+            console.log("Connection established to websocket");
+        };
+        ws.onmessage = function (event) {
+            console.log(event.data);
+        };
+        ws.onerror = function (event) {
+            console.log("Error: " + event.data);
+        };
+    </script>
+</html>
